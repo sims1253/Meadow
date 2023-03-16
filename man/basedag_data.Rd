@@ -2,7 +2,7 @@
 % Please edit documentation in R/6n1t1o2a1f1c.R
 \name{basedag_data}
 \alias{basedag_data}
-\title{The basic DAG from our TODO paper.}
+\title{Data generator from our TODO paper.}
 \source{
 TODO
 }
@@ -25,8 +25,8 @@ basedag_data(
   y_aux_list,
   data_family,
   data_link,
-  lb,
-  ub,
+  lb = -Inf,
+  ub = Inf,
   oversample = 1.3,
   seed = NULL,
   testing_data = TRUE,
@@ -85,6 +85,11 @@ used as testing data.}
 
 \item{...}{Catch-all ellipses that is added to the output.}
 }
+\value{
+A named list containing a dataset and collection of parameters and
+        other outputs of interest in data_gen_output. Can also contain a
+        testing_data dataset if testing_data is set to TRUE.
+}
 \description{
 The DAG consists of a treatment x, an outcome y, a fork z1, an ancestor of
 y z2, an ancestor of y z3 and a collider z4.
@@ -93,8 +98,7 @@ respective parameters.
 }
 \examples{
 
-
-data <- basedag_data(data_N = 5,
+data <- basedag_data(data_N = 10,
              z1_x_coef = 1,
              z3_x_coef = 1,
              x_y_coef = 1,
@@ -108,15 +112,13 @@ data <- basedag_data(data_N = 5,
              sigma_z3 = 1,
              sigma_z4 = 1,
              sigma_x = 1,
-             y_aux_list = list(),
-             data_family,
-             data_link,
-             lb,
-             ub,
+             y_aux_list = list(sd = 2.5),
+             "gaussian",
+             "identity",
              oversample = 1.3,
              seed = NULL,
-             testing_data = TRUE,
-             ...)
+             testing_data = TRUE)
 hist(data$dataset$y)
-data$dataset
+head(data$dataset)
+
 }

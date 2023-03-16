@@ -1,9 +1,10 @@
-#' The basic DAG from our TODO paper.
+#' Data generator from our TODO paper.
 #'
 #' The DAG consists of a treatment x, an outcome y, a fork z1, an ancestor of
 #' y z2, an ancestor of y z3 and a collider z4.
 #' All variables besides y are generated from normal distributions with the
 #' respective parameters.
+#'
 #'
 #' @source TODO
 #'
@@ -37,13 +38,15 @@
 #' @param seed A random seed to make the generation deterministic.
 #' @param ... Catch-all ellipses that is added to the output.
 #'
-#' @return
+#' @return A named list containing a dataset and collection of parameters and
+#'         other outputs of interest in data_gen_output. Can also contain a
+#'         testing_data dataset if testing_data is set to TRUE.
 #' @export
 #'
+#' @import stats
 #' @examples
 #'
-#'
-#' data <- basedag_data(data_N = 5,
+#' data <- basedag_data(data_N = 10,
 #'              z1_x_coef = 1,
 #'              z3_x_coef = 1,
 #'              x_y_coef = 1,
@@ -57,18 +60,15 @@
 #'              sigma_z3 = 1,
 #'              sigma_z4 = 1,
 #'              sigma_x = 1,
-#'              y_aux_list = list(),
-#'              data_family,
-#'              data_link,
-#'              lb,
-#'              ub,
+#'              y_aux_list = list(sd = 2.5),
+#'              "gaussian",
+#'              "identity",
 #'              oversample = 1.3,
 #'              seed = NULL,
-#'              testing_data = TRUE,
-#'              ...)
+#'              testing_data = TRUE)
 #' hist(data$dataset$y)
-#' data$dataset
-
+#' head(data$dataset)
+#'
 basedag_data <- function(data_N,
                          z1_x_coef,
                          z3_x_coef,
@@ -86,8 +86,8 @@ basedag_data <- function(data_N,
                          y_aux_list,
                          data_family,
                          data_link,
-                         lb,
-                         ub,
+                         lb = -Inf,
+                         ub = Inf,
                          oversample = 1.3,
                          seed = NULL,
                          testing_data = TRUE,
@@ -135,7 +135,7 @@ basedag_data <- function(data_N,
       data_family,
       c(
         list(
-          length(mu),
+          n = length(mu),
           mu
       ),
         y_aux_list
@@ -163,7 +163,7 @@ basedag_data <- function(data_N,
       )
     )
     iter <- iter + 1
-    bad_samples <- (data_gen_size * resample) - length(y)
+    bad_samples <- (data_gen_size * oversample) - length(y)
   }
 
   data_gen_output <- list(
@@ -184,7 +184,6 @@ basedag_data <- function(data_N,
     return(
       list(
         dataset = dataset,
-        testing_data = NULL,
         data_gen_output = data_gen_output
       )
     )

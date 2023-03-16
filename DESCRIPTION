@@ -1,19 +1,22 @@
-Package: Meadow
+Package: meadow
 Type: Package
-Title: A collection of DAG based generic data generating processes.
+Title: A collection of DAG based generic data generating processes
 Version: 0.1.0.9000
 Author: c(person("Maximilian", "Scholz", email = "research.scholz@mailbox.org",
              role = c("aut", "cre")))
 Maintainer: Maximilian Scholz <research.scholz@mailbox.org>
-Description: Meadow is a collection of functions to generate datasets that can
-    used in, besides other things, simulation studies. It mainly consists of the
-    functions we use with bayesim and is aiming to keep compatible with its
-    most recent version, however, the functions can be used in any other context
-    as well.
+Description: meadow is a collection of functions to generate datasets that can
+    used in, besides other things, simulation studies (eg. via bayesim).
+    It mainly consists of the functions we use with bayesim and is aiming to
+    keep compatible with its most recent version, however, the functions can be
+    used in any other contextas well.
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+    stats
 Suggests:
+    testthat (>= 3.1.0),
     bayesfam (>= 0.2.1)
 Remotes:
     sims1253/bayesfam
