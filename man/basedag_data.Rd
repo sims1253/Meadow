@@ -98,26 +98,28 @@ respective parameters.
 }
 \examples{
 
-data <- basedag_data(data_N = 10,
-             z1_x_coef = 1,
-             z3_x_coef = 1,
-             x_y_coef = 1,
-             z1_y_coef = 1,
-             z2_y_coef = 1,
-             y_z4_coef = 1,
-             x_z4_coef = 1,
-             y_intercept = 1,
-             sigma_z1 = 1,
-             sigma_z2 = 1,
-             sigma_z3 = 1,
-             sigma_z4 = 1,
-             sigma_x = 1,
-             y_aux_list = list(sd = 2.5),
-             "gaussian",
-             "identity",
-             oversample = 1.3,
-             seed = NULL,
-             testing_data = TRUE)
+data <- basedag_data(
+  data_N = 10,
+  z1_x_coef = 1,
+  z3_x_coef = 1,
+  x_y_coef = 1,
+  z1_y_coef = 1,
+  z2_y_coef = 1,
+  y_z4_coef = 1,
+  x_z4_coef = 1,
+  y_intercept = 1,
+  sigma_z1 = 1,
+  sigma_z2 = 1,
+  sigma_z3 = 1,
+  sigma_z4 = 1,
+  sigma_x = 1,
+  y_aux_list = list(sd = 2.5),
+  "gaussian",
+  "identity",
+  oversample = 1.3,
+  seed = NULL,
+  testing_data = TRUE
+)
 hist(data$dataset$y)
 head(data$dataset)
 
