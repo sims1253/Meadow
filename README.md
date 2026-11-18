@@ -17,22 +17,29 @@ people can reproduce old results.
 - `basedag_data_noisy()` ignores `noisy_y_intercept`. The outcome uses
   `y_intercept`, but `data_gen_output` reports the value of `noisy_y_intercept`.
 - `basedag_data_noisy()` draws its noisy parameters before it calls
-  `set.seed(seed)`. Two calls with the same `seed` return different parameters
-  and different data.
-- `basedag_data_noisy()` can draw a negative standard deviation. With the
-  default `noise_sd = 1`, about half of all calls return a `y` column that is
-  entirely `NaN`.
+  `set.seed(seed)`. They depend on the state of the random number generator
+  when the function starts, not only on `seed`. Two calls with the same `seed`
+  can return different parameters and different data.
+- `basedag_data_noisy()` can draw a negative standard deviation. If it does so
+  for `z1`, `z2`, `z3` or `x`, every value in the returned data set is `NA`. In
+  2000 calls with a Gaussian outcome, every standard deviation at 1 and the
+  default `noise_sd = 1`, about half returned such a data set.
 - `basedag_data_noisy()` passes `noisy_sigma_y` to the random number generator
   of the family as its third positional argument. This is correct for
-  `"gaussian"`. For `"student"` the value becomes the degrees of freedom and
-  the scale stays at 1.
+  `"gaussian"`. With bayesfam 0.3.2, a family with two auxiliary parameters
+  gets only the first, and the second keeps the default of the generator.
+  `"generalized_gamma"` fails because its `Q` has no default. With
+  `"unit_lindley"`, which has no auxiliary parameter, the function never
+  returns.
 - `basedag_data()` and `basedag_data_noisy()` discard outcomes outside `lb` and
   `ub`. The remaining rows no longer follow the coefficients in
-  `data_gen_output`. With `x_y_coef = 1`, `y_intercept = 1`, `lb = 0` and an
-  outcome standard deviation of 1, a linear regression recovers about 0.86.
+  `data_gen_output`. For example, take `basedag_data()` with a Gaussian outcome,
+  the identity link, `lb = 0`, and the intercept, every coefficient and every
+  standard deviation at 1. Then `lm(y ~ x + z1 + z2)` estimates the effect of
+  `x` as about 0.87.
 - `data_gen_conf_y_analysis()` prints empty values for `y_intercept` and
-  `y_sigma`. It looks for them in the configuration, which does not contain
-  them.
+  `y_sigma`. It reads them from `data_gen_conf$data_gen_output`, a field that
+  configurations do not have.
 - The generators call bayesfam, which is not on CRAN, but `DESCRIPTION` lists
   it only under `Suggests`. Without bayesfam, `basedag_data_noisy()` always
   fails, and `basedag_data()` fails when `data_family` or `data_link` is a
@@ -44,14 +51,13 @@ people can reproduce old results.
 ## Alternatives
 
 To simulate data from a causal graph, use the CRAN package
-[simDAG](https://cran.r-project.org/package=simDAG). bayesim plans a
-`dag_generator(dag, estimands, ...)` built on simDAG that computes true estimand
-values by intervention (`do()`). That function does not exist yet.
+[simDAG](https://cran.r-project.org/package=simDAG).
 
 ## Installing the last version
 
-To reproduce old work, install bayesfam and the last code commit of Meadow from
-GitHub. The package installs under the name `meadow`.
+The commands below install the current bayesfam and the last code commit of
+Meadow from GitHub. The package installs under the name `meadow`. Calls written
+in 2023 may need the bayesfam of that time.
 
 ```r
 remotes::install_github("sims1253/bayesfam")
