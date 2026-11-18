@@ -22,22 +22,23 @@ people can reproduce old results.
   can return different parameters and different data.
 - `basedag_data_noisy()` can draw a negative standard deviation. With a
   Gaussian outcome, if it does so for `z1`, `z2`, `z3` or `x`, every value in
-  the returned data set is `NA`. In 2000 such calls with every standard
-  deviation at 1 and the default `noise_sd = 1`, about half returned such a
-  data set.
+  the returned data set is `NA`. In 2000 calls with a Gaussian outcome, every
+  standard deviation at 1 and the default `noise_sd = 1`, about half returned
+  such a data set.
 - `basedag_data_noisy()` passes `noisy_sigma_y` to the random number generator
   of the family as its third positional argument. This is correct for
   `"gaussian"`. With bayesfam 0.3.2, a family with two auxiliary parameters
   gets only the first. The second keeps the default of the generator if it has
   one. `"generalized_gamma"` fails because its `Q` has none. `"unit_lindley"`
   has no auxiliary parameter: the function never returns when `noisy_sigma_y`
-  is left out, and it fails with an unused-argument error when it is given.
+  is `NULL`, its default, and it fails with an unused-argument error when
+  `noisy_sigma_y` has a value.
 - `basedag_data()` and `basedag_data_noisy()` discard outcomes outside `lb` and
   `ub`. The remaining rows no longer follow the coefficients in
   `data_gen_output`. For example, take `basedag_data()` with a Gaussian outcome,
   the identity link, `lb = 0`, and the intercept, every coefficient and every
   standard deviation at 1. With a million rows, `lm(y ~ x + z1 + z2)` then
-  estimates the effect of `x` as 0.87.
+  estimates the effect of `x` as about 0.87.
 - `data_gen_conf_y_analysis()` prints empty values for `y_intercept` and
   `y_sigma`. It reads them from `data_gen_conf$data_gen_output`, a field that
   configurations do not have.
