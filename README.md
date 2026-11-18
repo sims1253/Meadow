@@ -37,6 +37,9 @@ people can reproduce old results.
   it only under `Suggests`. Without bayesfam, `basedag_data_noisy()` always
   fails, and `basedag_data()` fails when `data_family` or `data_link` is a
   string.
+- `R CMD check` fails. The help page for `hello()` has an example, but the
+  package has no such function. The help pages cause four more warnings. The
+  two GitHub workflows never passed and have been removed.
 
 ## Alternatives
 
